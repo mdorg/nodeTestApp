@@ -4,7 +4,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const healthRoutes = require('./routes/health-route');
+const logoRoutes = require('./routes/logo-route');
 const swaggerRoutes = require('./routes/swagger-route');
+const gitRoutes = require('./routes/git-route');
+const dbRoutes = require('./routes/store-route');
+//const logoRoutes = require('./routes/logo-route');
 
 const app = express();
 
@@ -12,9 +16,16 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// access to static files
+app.use(express.static(path.join('public')));
+
 // routes and api calls
 app.use('/health', healthRoutes);
+app.use('/logo', logoRoutes);
 app.use('/swagger', swaggerRoutes);
+app.use('/git', gitRoutes);
+app.use('/store', dbRoutes);
+//app.use('./logo',logoRoutes);
 
 // default path to serve up index.html (single page application)
 app.all('', (req, res) => {
