@@ -10,8 +10,9 @@
 // import dependencies for App Configuration/AppRapp and initialize
 const { appRappClient } = require('@local/ibm-apprapp');
 const { UrlBuilder } = require('@local/ibm-apprapp/lib/Utils/UrlBuilder');
-const urlBuilder = UrlBuilder.getInstance()
-urlBuilder.setOverrideServerHost('apprapp-dev-37b89de8caeb649450a9af91731f3589-0000.us-south.containers.appdomain.cloud')
+const urlBuilder = UrlBuilder.getInstance();
+// urlBuilder.setOverrideServerHost('apprapp-dev-37b89de8caeb649450a9af91731f3589-0000.us-south.containers.appdomain.cloud')
+urlBuilder.setOverrideServerHost('apprapp-stage-37b89de8caeb649450a9af91731f3589-0000.us-south.containers.appdomain.cloud');
 
 const client = appRappClient.getInstance({
   region: 'us-south',
@@ -31,34 +32,34 @@ exports.getLogo = (req, res) => {
   // Retrieve value from App Configuration service here:
   const feature = client.getFeature('logo-image-source');
 
-  if(feature) {
-    console.log('feature found');
-  } 
-  else {
-    console.log('feature not found');
-  }
-
-  // console.log(`Feature currentValue ${feature.getCurrentValue()} `);
-
   // if(feature) {
-  //     if(feature.isEnabled()) {
-  //       console.log('feature is enabled');
-  //     } 
-  //     else {
-  //       console.log('feature is disabled');
-  //     }
-  //     console.log("data", feature);
-  //     console.log(`\n Feature Name ${feature.getFeatureName()} `);
-  //     console.log(`Feature ShortName ${feature.getFeatureShortName()} `);
-  //     console.log(`Feature Type ${feature.getFeatureDataType()} `);
-  //     console.log(`Feature is enabled ${feature.isEnabled()} `);
-  //     console.log(`Feature currentValue ${feature.getCurrentValue()} `);
+  //   console.log('feature found');
+  //   console.log(`Feature currentValue ${feature.getCurrentValue()} `);
+  // } 
+  // else {
+  //   console.log('feature not found');
   // }
+
+  if(feature) {
+      if(feature.isEnabled()) {
+        console.log('feature is enabled');
+      } 
+      else {
+        console.log('feature is disabled');
+      }
+      console.log("data", feature);
+      console.log(`\n Feature Name ${feature.getFeatureName()} `);
+      // console.log(`Feature ShortName ${feature.getFeatureShortName()} `);
+      console.log(`Feature Type ${feature.getFeatureDataType()} `);
+      console.log(`Feature is enabled ${feature.isEnabled()} `);
+      console.log(`Feature currentValue ${feature.getCurrentValue()} `);
+  }
 
   // Hard code values here:
   // var logoSrc = "logo.png"
-  var logoSrc = "https://upload.wikimedia.org/wikipedia/commons/c/c0/Wikipedia-sipi-image-db-mandrill-4.2.03-quantize-only-CCC.png";
+  // var logoSrc = "https://upload.wikimedia.org/wikipedia/commons/c/c0/Wikipedia-sipi-image-db-mandrill-4.2.03-quantize-only-CCC.png";
   // var logoSrc = "https://upload.wikimedia.org/wikipedia/en/7/7d/Lenna_%28test_image%29.png";
+  var logoSrc = feature.getCurrentValue();
 
   console.log('Get logo successful');
   return res.status(200).json({'logoSrc':logoSrc});
